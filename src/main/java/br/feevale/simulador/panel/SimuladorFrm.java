@@ -4,18 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.ComboBoxAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
+import br.feevale.simulador.domain.Chamado;
+import br.feevale.simulador.domain.ChamadoExcelBuilder;
 import br.feevale.simulador.domain.Simulador;
 import br.feevale.simulador.domain.TipoValorAleatorio;
 
@@ -26,6 +32,11 @@ public class SimuladorFrm extends JFrame {
 	private JButton btnCarregarRegistros;
 	private JComboBox<TipoValorAleatorio> cobTipoValor;
 	private PresentationModel<Simulador> model;
+	
+	private JTable table;
+	private ChamadoTableModel tableModel;
+	
+	private SelectionInList<Chamado> selectionChamados;
 	
 	public SimuladorFrm() {
 		initModel();
@@ -38,6 +49,10 @@ public class SimuladorFrm extends JFrame {
 		bean.setNrVezesSimular(3);
 
 		model = new PresentationModel<Simulador>(bean);
+		
+		selectionChamados = new SelectionInList<Chamado>(model.getModel("chamados"));
+		
+		tableModel = new ChamadoTableModel(selectionChamados);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -52,6 +67,7 @@ public class SimuladorFrm extends JFrame {
 		cobTipoValor = new JComboBox<TipoValorAleatorio>();
 		cobTipoValor.setModel(new ComboBoxAdapter<>(TipoValorAleatorio.values(), model.getModel("tipoValor")));
 		
+		table = new JTable(tableModel);
 	}
 
 	private void actionCarregarRegistros() {
@@ -59,6 +75,15 @@ public class SimuladorFrm extends JFrame {
 		if (showOpenDialog != JFileChooser.APPROVE_OPTION) return;
 		
 		File selectedFile = fileChooser.getSelectedFile();
+		ChamadoExcelBuilder builder = new ChamadoExcelBuilder(selectedFile);
+
+		model.getBean().getChamados().clear();
+
+		List<Chamado> chamados = builder.build();
+		
+		model.getBean().getChamados().addAll(chamados);
+		
+		tableModel.fireTableDataChanged();
 	}
 
 	private void initLayout() {
@@ -74,10 +99,17 @@ public class SimuladorFrm extends JFrame {
 	}
 
 	private Component montaForm() {
-		FormLayout layout = new FormLayout("pref");
+		FormLayout layout = new FormLayout("pref, 5px, 100dlu:grow");
 		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
 		
+		builder.appendRow("pref");
 		builder.append(btnCarregarRegistros);
+		builder.nextLine();
+		
+		builder.appendRow("fill:100dlu:grow");
+		builder.append(new JScrollPane(table), builder.getColumnCount());
+		builder.nextLine();
+		
 		return builder.getPanel();
 	}
 

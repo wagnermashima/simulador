@@ -53,8 +53,7 @@ public class ChamadoExcelBuilder {
 					
 					switch (cell.getColumnIndex()) {
 					case 0:
-						Double numericCellValue = cell.getNumericCellValue();
-						chamado.setNrChamado(numericCellValue.intValue());
+						chamado.setNrChamado(extractInteger(cell));
 						break;
 					case 1:
 						chamado.setDtEntradaDesenvolvimento(convertLocalDateTime(cell.getDateCellValue()));
@@ -66,12 +65,10 @@ public class ChamadoExcelBuilder {
 						chamado.setDtProximoChamado(convertLocalDateTime(cell.getDateCellValue()));
 						break;
 					case 7:
-						Double prioridadeCellValue = cell.getNumericCellValue();
-						chamado.setPrioridade(prioridadeCellValue.intValue());
+						chamado.setPrioridade(extractInteger(cell));
 						break;
 					case 8:
-						Double cdClienteCellValue = cell.getNumericCellValue();
-						chamado.setCdCliente(cdClienteCellValue.intValue());
+						chamado.setCdCliente(extractInteger(cell));
 						break;
 					}
 					
@@ -89,10 +86,25 @@ public class ChamadoExcelBuilder {
 		}
 	}
 
+	private Integer extractInteger(Cell cell) {
+		try {
+			Double numericCellValue = cell.getNumericCellValue();
+			return numericCellValue.intValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private LocalDateTime convertLocalDateTime(Date dateCellValue) {
-		if (dateCellValue == null) return null;
-		LocalDateTime localDateTime = dateCellValue.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-		return localDateTime;
+		try {
+			if (dateCellValue == null) return null;
+			LocalDateTime localDateTime = dateCellValue.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			return localDateTime;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }

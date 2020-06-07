@@ -47,7 +47,7 @@ public class ChamadoTableModel extends AbstractTableModel {
 		case 1: return chamado.getDtEntradaDesenvolvimento();
 		case 2: return chamado.getDtSaidaDesenvolvimento();
 		case 3: return chamado.getDtProximoChamado();
-		case 4: return chamado.getIntervalo();
+		case 4: return chamado.getIntervaloFormatted();
 		case 5: return chamado.getCdCliente();
 		case 6: return chamado.getPrioridade();
 		default: return null;

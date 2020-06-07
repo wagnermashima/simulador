@@ -1,6 +1,9 @@
 package br.feevale.simulador.domain;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class Chamado {
 
@@ -11,6 +14,7 @@ public class Chamado {
 	private LocalDateTime dtProximoChamado;
 	private Integer prioridade;
 	private Integer cdCliente;
+	private Duration intervalo;
 
 	public Integer getNrChamado() {
 		return nrChamado;
@@ -68,9 +72,28 @@ public class Chamado {
 		this.cdCliente = cdCliente;
 	}
 
-	public String getIntervalo() {
-		// TODO Auto-generated method stub
-		return null;
+	public void calcularIntervalo() {
+		try {
+			setIntervalo(Duration.between(dtSaidaDesenvolvimento, dtProximoChamado));
+		} catch (Exception e) {
+			setIntervalo(Duration.ZERO);
+		}
+	}
+
+	public Duration getIntervalo() {
+		return intervalo;
+	}
+
+	public void setIntervalo(Duration intervalo) {
+		this.intervalo = intervalo;
+	}
+	
+	public void setIntervalo(Long intervalo) {
+		setIntervalo(Duration.ofSeconds(intervalo));
+	}
+
+	public String getIntervaloFormatted() {
+		return DurationFormatUtils.formatDuration(getIntervalo().toMillis(), "HHH:mm");
 	}
 
 }

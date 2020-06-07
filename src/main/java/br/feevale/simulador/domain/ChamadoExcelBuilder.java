@@ -51,8 +51,6 @@ public class ChamadoExcelBuilder {
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
 					
-
-					
 					switch (cell.getColumnIndex()) {
 					case 0:
 						Double numericCellValue = cell.getNumericCellValue();
@@ -76,6 +74,8 @@ public class ChamadoExcelBuilder {
 						chamado.setCdCliente(cdClienteCellValue.intValue());
 						break;
 					}
+					
+					chamado.calcularIntervalo();
 
 				}
 				

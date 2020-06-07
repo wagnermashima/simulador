@@ -93,7 +93,7 @@ public class Chamado {
 	}
 
 	public String getIntervaloFormatted() {
-		return DurationFormatUtils.formatDuration(getIntervalo().toMillis(), "HHH:mm");
+		return DurationFormatUtils.formatDuration(getIntervalo().toMillis(), "HH:mm");
 	}
 
 }

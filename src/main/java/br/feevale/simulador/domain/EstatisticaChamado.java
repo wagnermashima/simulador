@@ -38,4 +38,12 @@ public class EstatisticaChamado {
 		return dataSet.getMedian();
 	}
 	
+	public Double getMinimo() {
+		return dataSet.getMinimum();
+	}
+	
+	public Double getMaximo() {
+		return dataSet.getMaximum();
+	}
+	
 }

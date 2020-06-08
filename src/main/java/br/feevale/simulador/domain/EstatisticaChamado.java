@@ -1,8 +1,5 @@
 package br.feevale.simulador.domain;
 
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-
 import org.apache.commons.math3.stat.descriptive.AggregateSummaryStatistics;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.uncommons.maths.statistics.DataSet;

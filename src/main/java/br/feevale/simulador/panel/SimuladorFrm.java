@@ -26,6 +26,7 @@ import br.feevale.simulador.domain.EstatisticaChamado;
 import br.feevale.simulador.domain.Simulador;
 import br.feevale.simulador.domain.SimuladorUtil;
 import br.feevale.simulador.domain.TipoValorAleatorio;
+import br.feevale.simulador.domain.fila.DinamicaFilaExecutor;
 
 @SuppressWarnings("serial")
 public class SimuladorFrm extends JFrame {
@@ -40,6 +41,7 @@ public class SimuladorFrm extends JFrame {
 	private ChamadoTableModel tableModel;
 	
 	private SelectionInList<Chamado> selectionChamados;
+	private JButton btnDinamica;
 	
 	public SimuladorFrm() {
 		initModel();
@@ -70,6 +72,9 @@ public class SimuladorFrm extends JFrame {
 		btnEstatisticas = new JButton("Estatisticas");
 		btnEstatisticas.addActionListener((e) -> actionEstatisticas());
 		
+		btnDinamica = new JButton("Exec. Dinamica");
+		btnDinamica.addActionListener((e) -> actionExecutarDinamica());
+		
 		cobTipoValor = new JComboBox<TipoValorAleatorio>();
 		cobTipoValor.setModel(new ComboBoxAdapter<>(TipoValorAleatorio.values(), model.getModel("tipoValor")));
 		
@@ -90,7 +95,6 @@ public class SimuladorFrm extends JFrame {
 		model.getBean().getChamados().addAll(chamados);
 		
 		tableModel.fireTableDataChanged();
-		
 	}
 	
 	private void actionEstatisticas() {
@@ -99,6 +103,10 @@ public class SimuladorFrm extends JFrame {
 		System.out.println(String.format("MEDIANA %s", SimuladorUtil.formatHoras(estatistica.getMediana())));
 		System.out.println(String.format("DESVIO PADRAO %s", SimuladorUtil.formatHoras(estatistica.getDesvioPadrao())));
 		System.out.println(String.format("VARIANCIA %s", SimuladorUtil.formatHoras(estatistica.getVariancia())));
+	}
+	
+	private void actionExecutarDinamica() {
+		new DinamicaFilaExecutor(model.getBean().getChamados()).execute();
 	}
 
 	private void initLayout() {
@@ -123,6 +131,10 @@ public class SimuladorFrm extends JFrame {
 		
 		builder.appendRow("pref");
 		builder.append(btnEstatisticas);
+		builder.nextLine();
+		
+		builder.appendRow("pref");
+		builder.append(btnDinamica);
 		builder.nextLine();
 		
 		builder.appendRow("fill:100dlu:grow");

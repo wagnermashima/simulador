@@ -34,6 +34,7 @@ public class SimuladorFrm extends JFrame {
 	private JFileChooser fileChooser;
 	private JButton btnCarregarRegistros;
 	private JButton btnEstatisticas;
+	private JButton btnTeste;
 	private JComboBox<TipoValorAleatorio> cobTipoValor;
 	private PresentationModel<Simulador> model;
 	
@@ -75,10 +76,17 @@ public class SimuladorFrm extends JFrame {
 		btnDinamica = new JButton("Exec. Dinamica");
 		btnDinamica.addActionListener((e) -> actionExecutarDinamica());
 		
+		btnTeste = new JButton("TESTE");
+		btnTeste.addActionListener((e) -> actionExecutarTeste());
+		
 		cobTipoValor = new JComboBox<TipoValorAleatorio>();
 		cobTipoValor.setModel(new ComboBoxAdapter<>(TipoValorAleatorio.values(), model.getModel("tipoValor")));
 		
 		table = new JTable(tableModel);
+	}
+
+	private void actionExecutarTeste() {
+		FilaFrm filaFrm = new FilaFrm(model.getBean());
 	}
 
 	private void actionCarregarRegistros() {
@@ -135,6 +143,10 @@ public class SimuladorFrm extends JFrame {
 		
 		builder.appendRow("pref");
 		builder.append(btnDinamica);
+		builder.nextLine();
+		
+		builder.appendRow("pref");
+		builder.append(btnTeste);
 		builder.nextLine();
 		
 		builder.appendRow("fill:100dlu:grow");

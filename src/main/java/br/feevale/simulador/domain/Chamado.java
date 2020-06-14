@@ -15,6 +15,8 @@ public class Chamado {
 	private Integer prioridade;
 	private Integer cdCliente;
 	private Duration intervalo;
+	
+	private Desenvolvedor desenvolvedor;
 
 	public Integer getNrChamado() {
 		return nrChamado;
@@ -94,6 +96,14 @@ public class Chamado {
 
 	public String getIntervaloFormatted() {
 		return DurationFormatUtils.formatDuration(getIntervalo().toMillis(), "HH:mm");
+	}
+
+	public Desenvolvedor getDesenvolvedor() {
+		return desenvolvedor;
+	}
+
+	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
+		this.desenvolvedor = desenvolvedor;
 	}
 
 }

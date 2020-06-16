@@ -7,24 +7,16 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 import org.uncommons.maths.number.NumberGenerator;
 
-public class GeradorChamado<T extends Number> {
+public class GeradorChamado {
 
 	private Simulador simulador;
-	private NumberGenerator<T> generator;
+	private NumberGenerator<? extends Number> intervalorGenerator;
+	private NumberGenerator<? extends Number> tempoDesenvolvimentoGenerator;
 
-	public GeradorChamado(Simulador simulador, NumberGenerator<T> generator) {
+	public GeradorChamado(Simulador simulador) {
 		this.simulador = simulador;
-		this.generator = generator;
-		/*
-		EstatisticaChamado estatisticas = new EstatisticaChamado(simulador);
-		if (simulador.getTipoValor() == TipoValorAleatorio.UNIFORME) {
-			generator = new DiscreteUniformGenerator(estatisticas.getMinimo().intValue(), estatisticas.getMaximo().intValue(), new Random());
-		} else if (simulador.getTipoValor() == TipoValorAleatorio.EXPONENCIAL) {
-			generator = new ExponentialGenerator(estatisticas.getMedia(), new MersenneTwister());
-		} else if (simulador.getTipoValor() == TipoValorAleatorio.NORMAL) {
-			generator = new GaussianGenerator(estatisticas.getMedia(), estatisticas.getDesvioPadrao(), new MersenneTwister());
-		}
-		*/
+		this.intervalorGenerator = NumberGeneratorFactory.build(new EstatisticaChamado(simulador, Chamado::getIntervaloSeconds), simulador.getTipoValor());
+		this.tempoDesenvolvimentoGenerator = NumberGeneratorFactory.build(new EstatisticaChamado(simulador, Chamado::getTempoDesenvolvimento), simulador.getTipoValor());
 	}
 	
 	public List<Chamado> gerar() {
@@ -44,7 +36,7 @@ public class GeradorChamado<T extends Number> {
 	}
 
 	private Duration getIntervaloRandom() {
-		return Duration.ofSeconds(generator.nextValue().longValue());
+		return Duration.ofSeconds(intervalorGenerator.nextValue().longValue());
 	}
 	
 }

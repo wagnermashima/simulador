@@ -85,6 +85,11 @@ public class Chamado {
 	public Duration getIntervalo() {
 		return intervalo;
 	}
+	
+	public Double getIntervaloSeconds() {
+		Long seconds = getIntervalo().getSeconds();
+		return seconds.doubleValue();
+	}
 
 	public void setIntervalo(Duration intervalo) {
 		this.intervalo = intervalo;
@@ -104,6 +109,12 @@ public class Chamado {
 
 	public void setDesenvolvedor(Desenvolvedor desenvolvedor) {
 		this.desenvolvedor = desenvolvedor;
+	}
+	
+	public Double getTempoDesenvolvimento() {
+		if (getDtSaidaDesenvolvimento() == null) return null;
+		Long seconds = Duration.between(getDtEntradaDesenvolvimento(), getDtSaidaDesenvolvimento()).getSeconds();
+		return seconds.doubleValue();
 	}
 
 }

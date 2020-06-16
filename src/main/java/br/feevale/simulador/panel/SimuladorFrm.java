@@ -106,7 +106,7 @@ public class SimuladorFrm extends JFrame {
 	}
 	
 	private void actionEstatisticas() {
-		EstatisticaChamado estatistica = new EstatisticaChamado(model.getBean());
+		EstatisticaChamado estatistica = new EstatisticaChamado(model.getBean(), Chamado::getIntervaloSeconds);
 		System.out.println(String.format("MEDIA %s", SimuladorUtil.formatHoras(estatistica.getMedia())));
 		System.out.println(String.format("MEDIANA %s", SimuladorUtil.formatHoras(estatistica.getMediana())));
 		System.out.println(String.format("DESVIO PADRAO %s", SimuladorUtil.formatHoras(estatistica.getDesvioPadrao())));

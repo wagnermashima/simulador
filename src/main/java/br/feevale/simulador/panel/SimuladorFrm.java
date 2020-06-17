@@ -35,6 +35,9 @@ public class SimuladorFrm extends JFrame {
 	private JButton btnCarregarRegistros;
 	private JButton btnEstatisticas;
 	private JButton btnTeste;
+	
+	private JButton btnADS;
+	
 	private JComboBox<TipoValorAleatorio> cobTipoValor;
 	private PresentationModel<Simulador> model;
 	
@@ -52,7 +55,6 @@ public class SimuladorFrm extends JFrame {
 
 	private void initModel() {
 		Simulador bean = new Simulador();
-		bean.setNrVezesSimular(3);
 
 		model = new PresentationModel<Simulador>(bean);
 		
@@ -79,10 +81,17 @@ public class SimuladorFrm extends JFrame {
 		btnTeste = new JButton("TESTE");
 		btnTeste.addActionListener((e) -> actionExecutarTeste());
 		
+		btnADS = new JButton("ADS");
+		btnADS.addActionListener((e) -> actionExecutarADS());
+		
 		cobTipoValor = new JComboBox<TipoValorAleatorio>();
 		cobTipoValor.setModel(new ComboBoxAdapter<>(TipoValorAleatorio.values(), model.getModel("tipoValor")));
 		
 		table = new JTable(tableModel);
+	}
+
+	private void actionExecutarADS() {
+		AnaliseFrm analiseFrm = new AnaliseFrm(model);
 	}
 
 	private void actionExecutarTeste() {
@@ -106,7 +115,7 @@ public class SimuladorFrm extends JFrame {
 	}
 	
 	private void actionEstatisticas() {
-		EstatisticaChamado estatistica = new EstatisticaChamado(model.getBean(), Chamado::getIntervaloSeconds);
+		EstatisticaChamado estatistica = new EstatisticaChamado(model.getBean(), Chamado::getTempoEmEsperaSeconds);
 		System.out.println(String.format("MEDIA %s", SimuladorUtil.formatHoras(estatistica.getMedia())));
 		System.out.println(String.format("MEDIANA %s", SimuladorUtil.formatHoras(estatistica.getMediana())));
 		System.out.println(String.format("DESVIO PADRAO %s", SimuladorUtil.formatHoras(estatistica.getDesvioPadrao())));

@@ -10,8 +10,6 @@ import java.util.List;
 public class Simulador {
 
 	private List<Chamado> chamados = new ArrayList<>();
-	private TipoValorAleatorio tipoValor;
-	private Integer nrVezesSimular;
 	private Integer escalaUmaHora = 300;
 	private Integer nrDesenvolvedores = 10;
 	
@@ -44,26 +42,6 @@ public class Simulador {
 		Object oldValue = this.chamados;
 		this.chamados = chamados;
 		changeSupport.firePropertyChange("chamados", oldValue, chamados);
-	}
-
-	public TipoValorAleatorio getTipoValor() {
-		return tipoValor;
-	}
-
-	public void setTipoValor(TipoValorAleatorio tipoValor) {
-		Object oldValue = this.tipoValor;
-		this.tipoValor = tipoValor;
-		changeSupport.firePropertyChange("tipoValor", oldValue, tipoValor);
-	}
-
-	public Integer getNrVezesSimular() {
-		return nrVezesSimular;
-	}
-
-	public void setNrVezesSimular(Integer nrVezesSimular) {
-		Object oldValue = this.nrVezesSimular;
-		this.nrVezesSimular = nrVezesSimular;
-		changeSupport.firePropertyChange("nrVezesSimular", oldValue, nrVezesSimular);
 	}
 
 	public Integer getEscalaUmaHora() {
@@ -129,7 +107,7 @@ public class Simulador {
 	public void start() {
 		chamados.sort((o1, o2) -> o1.getDtEntradaDesenvolvimento().compareTo(o2.getDtEntradaDesenvolvimento()));
 		
-		horaAtual = chamados.stream().findFirst().get().getDtEntradaDesenvolvimento();
+		horaAtual = chamados.stream().findFirst().get().getDtEntradaDesenvolvimento().withHour(0).withMinute(0).withSecond(0);
 		
 		if (!desenvolvedores.isEmpty()) {
 			desenvolvedores.clear();

@@ -22,6 +22,7 @@ import br.feevale.simulador.domain.Chamado;
 import br.feevale.simulador.domain.Desenvolvedor;
 import br.feevale.simulador.domain.Simulador;
 import br.feevale.simulador.domain.SimuladorThread;
+import br.feevale.simulador.domain.RepresentacaoFila;
 
 @SuppressWarnings("serial")
 public class FilaFrm extends JFrame {
@@ -132,7 +133,5 @@ public class FilaFrm extends JFrame {
 		Thread thread = new Thread(new SimuladorThread(model.getBean()));
 		thread.start();
 	}
-	
-	
 
 }

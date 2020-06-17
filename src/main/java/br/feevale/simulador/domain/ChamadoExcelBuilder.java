@@ -59,9 +59,12 @@ public class ChamadoExcelBuilder {
 						chamado.setDtEntradaDesenvolvimento(convertLocalDateTime(cell.getDateCellValue()));
 						break;
 					case 2:
-						chamado.setDtSaidaDesenvolvimento(convertLocalDateTime(cell.getDateCellValue()));
+						chamado.setDtEntradaBacklog(convertLocalDateTime(cell.getDateCellValue()));
 						break;
 					case 3:
+						chamado.setDtSaidaDesenvolvimento(convertLocalDateTime(cell.getDateCellValue()));
+						break;
+					case 4:
 						chamado.setDtProximoChamado(convertLocalDateTime(cell.getDateCellValue()));
 						break;
 					case 7:
@@ -72,7 +75,7 @@ public class ChamadoExcelBuilder {
 						break;
 					}
 					
-					chamado.calcularIntervalo();
+					chamado.calcularTempoChamado();
 
 				}
 				

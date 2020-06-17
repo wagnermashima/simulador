@@ -22,7 +22,7 @@ public class ChamadoTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 7;
+		return 6;
 	}
 	
 	@Override
@@ -30,11 +30,10 @@ public class ChamadoTableModel extends AbstractTableModel {
 		switch (column) {
 		case 0: return "Numero";
 		case 1: return "Data entrada dev";
-		case 2: return "Data saida dev";
-		case 3: return "Data prox chamado";
-		case 4: return "Intervalo";
-		case 5: return "Cliente";
-		case 6: return "Prioridade";
+		case 2: return "Data entrada backlog";
+		case 3: return "Tempo em espera";
+		case 4: return "Cliente";
+		case 5: return "Prioridade";
 		default: return null;
 		}
 	}
@@ -45,11 +44,10 @@ public class ChamadoTableModel extends AbstractTableModel {
 		switch (columnIndex) {
 		case 0: return chamado.getNrChamado();
 		case 1: return chamado.getDtEntradaDesenvolvimento();
-		case 2: return chamado.getDtSaidaDesenvolvimento();
-		case 3: return chamado.getDtProximoChamado();
-		case 4: return chamado.getIntervaloFormatted();
-		case 5: return chamado.getCdCliente();
-		case 6: return chamado.getPrioridade();
+		case 2: return chamado.getDtEntradaBacklog();
+		case 3: return chamado.getTempoEmEsperaFormatted();
+		case 4: return chamado.getCdCliente();
+		case 5: return chamado.getPrioridade();
 		default: return null;
 		}
 	}

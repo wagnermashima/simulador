@@ -9,12 +9,16 @@ public class Chamado {
 
 	private Integer nrChamado;
 	private LocalDateTime dtAbertura;
+	private LocalDateTime dtEntradaBacklog;
 	private LocalDateTime dtEntradaDesenvolvimento;
 	private LocalDateTime dtSaidaDesenvolvimento;
 	private LocalDateTime dtProximoChamado;
 	private Integer prioridade;
 	private Integer cdCliente;
-	private Duration intervalo;
+	
+	private Duration tempoEntreChamados;
+	private Duration tempoEmEspera;
+	private Duration tempoEmDesenvolvimento;
 	
 	private Desenvolvedor desenvolvedor;
 
@@ -74,33 +78,39 @@ public class Chamado {
 		this.cdCliente = cdCliente;
 	}
 
-	public void calcularIntervalo() {
+	public void calcularTempoChamado() {
+		setTempoEntreChamados(calcularTempo(dtEntradaDesenvolvimento, dtProximoChamado));
+		setTempoEmEspera(calcularTempo(dtEntradaDesenvolvimento, dtEntradaBacklog));
+		setTempoEmDesenvolvimento(calcularTempo(dtEntradaBacklog, dtSaidaDesenvolvimento));
+	}
+
+	private Duration calcularTempo(LocalDateTime primeiraData, LocalDateTime segundaData) {
 		try {
-			setIntervalo(Duration.between(dtSaidaDesenvolvimento, dtProximoChamado));
+			return Duration.between(primeiraData, segundaData);
 		} catch (Exception e) {
-			setIntervalo(Duration.ZERO);
+			return Duration.ZERO;
 		}
 	}
 
-	public Duration getIntervalo() {
-		return intervalo;
+	public Duration getTempoEmEspera() {
+		return tempoEmEspera;
 	}
 	
-	public Double getIntervaloSeconds() {
-		Long seconds = getIntervalo().getSeconds();
+	public Double getTempoEmEsperaSeconds() {
+		Long seconds = getTempoEmEspera().getSeconds();
 		return seconds.doubleValue();
 	}
 
-	public void setIntervalo(Duration intervalo) {
-		this.intervalo = intervalo;
+	public void setTempoEmEspera(Duration intervalo) {
+		this.tempoEmEspera = intervalo;
 	}
 	
-	public void setIntervalo(Long intervalo) {
-		setIntervalo(Duration.ofSeconds(intervalo));
+	public void setTempoEmEspera(Long intervalo) {
+		setTempoEmEspera(Duration.ofSeconds(intervalo));
 	}
 
-	public String getIntervaloFormatted() {
-		return DurationFormatUtils.formatDuration(getIntervalo().toMillis(), "HH:mm");
+	public String getTempoEmEsperaFormatted() {
+		return DurationFormatUtils.formatDuration(getTempoEmEspera().toMillis(), "HH:mm");
 	}
 
 	public Desenvolvedor getDesenvolvedor() {
@@ -111,10 +121,37 @@ public class Chamado {
 		this.desenvolvedor = desenvolvedor;
 	}
 	
-	public Double getTempoDesenvolvimento() {
-		if (getDtSaidaDesenvolvimento() == null) return null;
-		Long seconds = Duration.between(getDtEntradaDesenvolvimento(), getDtSaidaDesenvolvimento()).getSeconds();
+	public Double getTempoEmDesenvolvimentoSeconds() {
+		Long seconds = tempoEmDesenvolvimento.getSeconds();
 		return seconds.doubleValue();
 	}
 
+	public LocalDateTime getDtEntradaBacklog() {
+		return dtEntradaBacklog;
+	}
+
+	public void setDtEntradaBacklog(LocalDateTime dtEntradaBacklog) {
+		this.dtEntradaBacklog = dtEntradaBacklog;
+	}
+
+	public Duration getTempoEmDesenvolvimento() {
+		return tempoEmDesenvolvimento;
+	}
+	
+	public void setTempoEmDesenvolvimento(Duration tempoEmDesenvolvimento) {
+		this.tempoEmDesenvolvimento = tempoEmDesenvolvimento;
+	}
+
+	public Duration getTempoEntreChamados() {
+		return tempoEntreChamados;
+	}
+
+	public void setTempoEntreChamados(Duration tempoEntreChamados) {
+		this.tempoEntreChamados = tempoEntreChamados;
+	}
+	
+	public Double getTempoEntreChamadosSeconds() {
+		Long seconds = getTempoEntreChamados().getSeconds();
+		return seconds.doubleValue();
+	}
 }

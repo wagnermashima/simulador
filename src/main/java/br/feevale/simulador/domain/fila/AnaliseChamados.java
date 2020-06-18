@@ -5,9 +5,13 @@ import java.util.Map;
 
 import org.uncommons.maths.statistics.DataSet;
 
+import br.feevale.simulador.domain.TipoValorAleatorio;
+
 public class AnaliseChamados {
 	
 	private final Map<Integer, Double> resultadoMetrica = new HashMap<>();
+	private TipoValorAleatorio tipo;
+	private Integer nrDesenvolvedores;
 	private Double media;
 	private Double desvioPadrao;
 	private DataSet dataSet;
@@ -44,6 +48,22 @@ public class AnaliseChamados {
 			}
 		}
 		return dataSet;
+	}
+
+	public TipoValorAleatorio getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoValorAleatorio tipo) {
+		this.tipo = tipo;
+	}
+
+	public Integer getNrDesenvolvedores() {
+		return nrDesenvolvedores;
+	}
+
+	public void setNrDesenvolvedores(Integer nrDesenvolvedores) {
+		this.nrDesenvolvedores = nrDesenvolvedores;
 	}
 
 }

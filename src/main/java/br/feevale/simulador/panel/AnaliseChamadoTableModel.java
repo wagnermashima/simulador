@@ -25,10 +25,10 @@ public class AnaliseChamadoTableModel extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		List<AnaliseChamados> list = selection.getList();
-		if (list == null || list.isEmpty()) return 2;
+		if (list == null || list.isEmpty()) return 4;
 		AnaliseChamados analise = list.get(0);
-		if (analise == null || analise.getResultadoMetrica().isEmpty()) return 2;
-		return analise.getResultadoMetrica().values().size() + 2;
+		if (analise == null || analise.getResultadoMetrica().isEmpty()) return 4;
+		return analise.getResultadoMetrica().values().size() + 4;
 	}
 
 	@Override
@@ -36,8 +36,12 @@ public class AnaliseChamadoTableModel extends AbstractTableModel {
 		AnaliseChamados analise = selection.getElementAt(rowIndex);
 		if (analise == null) return null;
 		
-		if (analise.getResultadoMetrica().containsKey(columnIndex)) {
-			return analise.getResultadoMetrica().get(columnIndex);
+		if (columnIndex == 0) {
+			return analise.getTipo();
+		} else if (columnIndex == 1) {
+			return analise.getNrDesenvolvedores();
+		} else if (columnIndex > 1  && columnIndex < getColumnCount() -2) {
+			return analise.getResultadoMetrica().get(columnIndex - 2);
 		} else if (columnIndex == getColumnCount() - 2) {
 			return analise.getMedia();
 		} else if (columnIndex == getColumnCount() - 1) {
@@ -48,7 +52,11 @@ public class AnaliseChamadoTableModel extends AbstractTableModel {
 	
 	@Override
 	public String getColumnName(int column) {
-		if (column == getColumnCount() - 2) {
+		if (column == 0) {
+			return "Tipo valor";
+		} else if (column == 1) {
+			return "Nr. desenvolvedores";
+		} else  if (column == getColumnCount() - 2) {
 			return "Media";
 		} else if (column == getColumnCount() - 1) {
 			return "Desvio Padrao";

@@ -40,6 +40,7 @@ public class AnaliseFrm extends JFrame {
 	private SelectionInList<AnaliseChamados> selectionAnalise;
 	
 	private JTextField tfNrVezes;
+	private JTextField tfNrDesenvolvedores;
 	private JComboBox<TipoValorAleatorio> cobTipoValor;
 	
 	private JTextField tfMedia;
@@ -80,6 +81,8 @@ public class AnaliseFrm extends JFrame {
 		cobTipoValor = new JComboBox<>(new ComboBoxAdapter(TipoValorAleatorio.values(), modelFilter.getModel("tipoValor")));
 		tfNrVezes = BasicComponentFactory.createIntegerField(modelFilter.getModel("nrVezesSimular"));
 		
+		tfNrDesenvolvedores = BasicComponentFactory.createIntegerField(model.getModel("nrDesenvolvedores"));
+		
 		tableModel = new AnaliseChamadoTableModel(selectionAnalise);
 		tableAnalise = new JTable(tableModel);
 		
@@ -114,7 +117,7 @@ public class AnaliseFrm extends JFrame {
 	}
 
 	private Component montaForm() {
-		FormLayout layout = new FormLayout("pref, 5px, 100dlu, 5px, pref, 5px, 50dlu, 5px, 1dlu:grow");
+		FormLayout layout = new FormLayout("pref, 5px, 100dlu, 5px, pref, 5px, 50dlu, 5px, pref, 5px, 50dlu, 1dlu:grow");
 		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
 		
 		builder.border(BorderFactory.createTitledBorder("Simular"));
@@ -122,6 +125,7 @@ public class AnaliseFrm extends JFrame {
 		builder.appendRow("pref");
 		builder.append("Tipo:", cobTipoValor);
 		builder.append("Nr. vezes", tfNrVezes);
+		builder.append("Nr. desenvolvedores", tfNrDesenvolvedores);
 		builder.nextLine();
 		
 		builder.appendRow("pref");
@@ -139,6 +143,8 @@ public class AnaliseFrm extends JFrame {
 		AnaliseFilter filter = modelFilter.getBean();
 		
 		AnaliseChamados analise = new AnaliseChamados();
+		analise.setTipo(filter.getTipoValor());
+		analise.setNrDesenvolvedores(model.getBean().getNrDesenvolvedores());
 		for (int i = 0; i < filter.getNrVezesSimular(); i++) {
 			
 			GeradorChamado geradorChamado = new GeradorChamado(model.getBean(), filter.getTipoValor());

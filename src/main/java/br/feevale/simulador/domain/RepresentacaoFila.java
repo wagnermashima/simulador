@@ -1,5 +1,6 @@
 package br.feevale.simulador.domain;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class RepresentacaoFila {
@@ -40,6 +41,7 @@ public class RepresentacaoFila {
 				
 				LocalDateTime horaAtual = simulador.getHoraAtual();
 				chamado.setDtEntradaBacklog(horaAtual);
+				chamado.setTempoEmEspera(Duration.between(chamado.getDtEntradaDesenvolvimento(), horaAtual));
 				chamado.setDtSaidaDesenvolvimento(horaAtual.plusSeconds(chamado.getTempoEmDesenvolvimentoRandom()));
 				
 				desenvolvedor.setChamado(chamado);

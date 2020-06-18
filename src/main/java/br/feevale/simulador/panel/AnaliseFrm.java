@@ -1,17 +1,25 @@
 package br.feevale.simulador.panel;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.BasicComponentFactory;
 import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.list.SelectionInList;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
 
 import br.feevale.simulador.domain.AnaliseFilter;
 import br.feevale.simulador.domain.Chamado;
@@ -29,7 +37,7 @@ public class AnaliseFrm extends JFrame {
 	private PresentationModel<AnaliseFilter> modelFilter;
 	private PresentationModel<EstatisticaChamado> modelEstatistica;
 	
-	private SelectionInList<AnaliseChamados> selectionInList;
+	private SelectionInList<AnaliseChamados> selectionAnalise;
 	
 	private JTextField tfNrVezes;
 	private JComboBox<TipoValorAleatorio> cobTipoValor;
@@ -38,6 +46,9 @@ public class AnaliseFrm extends JFrame {
 	private JTextField tfDesvioPadrao;
 	
 	private JButton btnSimular;
+	
+	private JTable tableAnalise;
+	private AnaliseChamadoTableModel tableModel;
 
 	public AnaliseFrm(PresentationModel<Simulador> model) {
 		this.model = model;
@@ -51,28 +62,86 @@ public class AnaliseFrm extends JFrame {
 	private void initModel() {
 		modelEstatistica = new PresentationModel<EstatisticaChamado>();
 		
-		selectionInList = new SelectionInList<AnaliseChamados>(new ArrayList<>());
+		AnaliseFilter filter = new AnaliseFilter();
+		filter.setNrVezesSimular(10);
+		filter.setTipoValor(TipoValorAleatorio.NORMAL);
+		modelFilter = new PresentationModel<AnaliseFilter>(filter);
+		
+		selectionAnalise = new SelectionInList<AnaliseChamados>(new ArrayList<>());
 	}
 
 	private void initComponents() {
-		tfMedia = BasicComponentFactory.createFormattedTextField(model.getModel("media"), new DecimalFormat("#,###.00"));
-		tfDesvioPadrao = BasicComponentFactory.createFormattedTextField(model.getModel("desvioPadrao"), new DecimalFormat("#,###.00"));
+		tfMedia = BasicComponentFactory.createFormattedTextField(modelEstatistica.getModel("media"), new DecimalFormat("#,###.00"));
+		tfMedia.setEditable(false);
+		
+		tfDesvioPadrao = BasicComponentFactory.createFormattedTextField(modelEstatistica.getModel("desvioPadrao"), new DecimalFormat("#,###.00"));
+		tfDesvioPadrao.setEditable(false);
 		
 		cobTipoValor = new JComboBox<>(new ComboBoxAdapter(TipoValorAleatorio.values(), modelFilter.getModel("tipoValor")));
-		tfNrVezes = BasicComponentFactory.createIntegerField(model.getModel("nrVezes"));
+		tfNrVezes = BasicComponentFactory.createIntegerField(modelFilter.getModel("nrVezesSimular"));
+		
+		tableModel = new AnaliseChamadoTableModel(selectionAnalise);
+		tableAnalise = new JTable(tableModel);
+		
+		btnSimular = new JButton("Simular");
+		btnSimular.addActionListener((e) -> actionSimular());
 	}
 
 	private void initLayout() {
+		setLayout(new BorderLayout());
+		add(montaFormDadosOriginais(), BorderLayout.NORTH);
+		add(montaForm(), BorderLayout.CENTER);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setPreferredSize(new Dimension(800, 600));
 		
+		pack();
+		
+		setVisible(true);
 	}
 	
+	private Component montaFormDadosOriginais() {
+		FormLayout layout = new FormLayout("pref, 5px, 80dlu, 5px, pref, 5px, 80dlu");
+		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+		
+		builder.border(BorderFactory.createTitledBorder("Original"));
+		
+		builder.appendRow("pref");
+		builder.append("Media:", tfMedia);
+		builder.append("Desvio padrao", tfDesvioPadrao);
+		builder.nextLine();
+		
+		return builder.getPanel();
+	}
+
+	private Component montaForm() {
+		FormLayout layout = new FormLayout("pref, 5px, 100dlu, 5px, pref, 5px, 50dlu, 5px, 1dlu:grow");
+		DefaultFormBuilder builder = new DefaultFormBuilder(layout);
+		
+		builder.border(BorderFactory.createTitledBorder("Simular"));
+		
+		builder.appendRow("pref");
+		builder.append("Tipo:", cobTipoValor);
+		builder.append("Nr. vezes", tfNrVezes);
+		builder.nextLine();
+		
+		builder.appendRow("pref");
+		builder.append(btnSimular);
+		builder.nextLine();
+		
+		builder.appendRow("fill:100dlu:grow");
+		builder.append(new JScrollPane(tableAnalise), builder.getColumnCount());
+		builder.nextLine();
+		
+		return builder.getPanel();
+	}
+
 	public void actionSimular() {
 		AnaliseFilter filter = modelFilter.getBean();
-
-		GeradorChamado geradorChamado = new GeradorChamado(model.getBean(), filter.getTipoValor());
 		
+		AnaliseChamados analise = new AnaliseChamados();
 		for (int i = 0; i < filter.getNrVezesSimular(); i++) {
 			
+			GeradorChamado geradorChamado = new GeradorChamado(model.getBean(), filter.getTipoValor());
 			Simulador simulador = new Simulador();
 			simulador.setChamados(geradorChamado.gerar());
 			
@@ -81,11 +150,11 @@ public class AnaliseFrm extends JFrame {
 			
 			EstatisticaChamado estatisticas = new EstatisticaChamado(simulador, Chamado::getTempoEmEsperaSeconds);
 			
-			AnaliseChamados analise = new AnaliseChamados();
 			analise.getResultadoMetrica().put(i, estatisticas.getMedia());
-			
-			selectionInList.getList().add(analise);
 		}
+		selectionAnalise.getList().add(analise);
+		tableModel.fireTableStructureChanged();
+		tableModel.fireTableDataChanged();
 	}
 
 }

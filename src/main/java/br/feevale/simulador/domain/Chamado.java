@@ -21,6 +21,7 @@ public class Chamado {
 	private Duration tempoEmDesenvolvimento;
 	
 	private Desenvolvedor desenvolvedor;
+	private Long tempoEmDesenvolvimentoRandom;
 
 	public Integer getNrChamado() {
 		return nrChamado;
@@ -154,4 +155,13 @@ public class Chamado {
 		Long seconds = getTempoEntreChamados().getSeconds();
 		return seconds.doubleValue();
 	}
+
+	public void setTempoEmDesenvolvimentoRandom(Long tempoEmDesenvolvimentoRandom) {
+		this.tempoEmDesenvolvimentoRandom = tempoEmDesenvolvimentoRandom;
+	}
+	
+	public Long getTempoEmDesenvolvimentoRandom() {
+		return tempoEmDesenvolvimentoRandom;
+	}
+	
 }

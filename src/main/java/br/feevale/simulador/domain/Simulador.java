@@ -206,4 +206,10 @@ public class Simulador {
 		changeSupport.firePropertyChange("horaAtualFormatted", oldValue, horaAtualFormatted);
 	}
 
+	public void resetChamados() {
+		getChamados().addAll(emDesenvolvimento);
+		getChamados().addAll(filaDesenvolvimento);
+		getChamados().addAll(finalizados);
+	}
+
 }

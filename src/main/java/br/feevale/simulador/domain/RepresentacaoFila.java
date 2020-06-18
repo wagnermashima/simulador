@@ -25,6 +25,8 @@ public class RepresentacaoFila {
 			
 			continnue = simulador.getChamados().size() > 0;
 		}
+		
+		simulador.resetChamados();
 	}
 	
 	private void transfereEmDesenvolvimento() {
@@ -38,7 +40,7 @@ public class RepresentacaoFila {
 				
 				LocalDateTime horaAtual = simulador.getHoraAtual();
 				chamado.setDtEntradaBacklog(horaAtual);
-				chamado.setDtSaidaDesenvolvimento(horaAtual.plus(chamado.getTempoEmDesenvolvimento()));
+				chamado.setDtSaidaDesenvolvimento(horaAtual.plusSeconds(chamado.getTempoEmDesenvolvimentoRandom()));
 				
 				desenvolvedor.setChamado(chamado);
 

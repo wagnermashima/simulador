@@ -38,7 +38,6 @@ public class SimuladorFrm extends JFrame {
 	
 	private JButton btnADS;
 	
-	private JComboBox<TipoValorAleatorio> cobTipoValor;
 	private PresentationModel<Simulador> model;
 	
 	private JTable table;
@@ -83,9 +82,6 @@ public class SimuladorFrm extends JFrame {
 		
 		btnADS = new JButton("ADS");
 		btnADS.addActionListener((e) -> actionExecutarADS());
-		
-		cobTipoValor = new JComboBox<TipoValorAleatorio>();
-		cobTipoValor.setModel(new ComboBoxAdapter<>(TipoValorAleatorio.values(), model.getModel("tipoValor")));
 		
 		table = new JTable(tableModel);
 	}
@@ -155,7 +151,7 @@ public class SimuladorFrm extends JFrame {
 		builder.nextLine();
 		
 		builder.appendRow("pref");
-		builder.append(btnTeste);
+		builder.append(btnADS);
 		builder.nextLine();
 		
 		builder.appendRow("fill:100dlu:grow");

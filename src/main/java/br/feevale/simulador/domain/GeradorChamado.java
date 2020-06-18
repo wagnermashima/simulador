@@ -28,9 +28,11 @@ public class GeradorChamado {
 				Chamado novoChamado = new Chamado();
 				BeanUtils.copyProperties(novoChamado, chamado);
 				
-				dataBase = dataBase.plus(getTempoEntreChamadosRandom());
+				dataBase = dataBase.plusSeconds(getTempoEntreChamadosRandom());
 				novoChamado.setDtEntradaDesenvolvimento(dataBase);
-				novoChamado.setTempoEmDesenvolvimento(getTempoEmDesenvolvimentoRandom());
+				novoChamado.setTempoEmDesenvolvimentoRandom(getTempoEmDesenvolvimentoRandom());
+				
+				novosChamados.add(novoChamado);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -39,12 +41,12 @@ public class GeradorChamado {
 		return novosChamados;
 	}
 
-	private Duration getTempoEntreChamadosRandom() {
-		return Duration.ofSeconds(tempoEntreChamadosGenerator.nextValue().longValue());
+	private Long getTempoEntreChamadosRandom() {
+		return tempoEntreChamadosGenerator.nextValue().longValue();
 	}
 	
-	private Duration getTempoEmDesenvolvimentoRandom() {
-		return Duration.ofSeconds(tempoDesenvolvimentoGenerator.nextValue().longValue());
+	private Long getTempoEmDesenvolvimentoRandom() {
+		return tempoDesenvolvimentoGenerator.nextValue().longValue();
 	}
 	
 }

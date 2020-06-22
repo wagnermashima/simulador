@@ -17,12 +17,16 @@ public class DinamicaFilaExecutor {
 		this.movimentos = new ArrayList<>();
 
 		for (Chamado chamado : chamados) {
-			movimentos.add(MovimentoFila.entrada(chamado));
-			movimentos.add(MovimentoFila.saida(chamado));
+			if(chamado.getDtEntradaDesenvolvimento() != null) { 
+				movimentos.add(MovimentoFila.entrada(chamado));
+			}
+			
+			if(chamado.getDtSaidaDesenvolvimento() != null) { 
+				movimentos.add(MovimentoFila.saida(chamado));
+			}
 		}
 
 		Collections.sort(movimentos);
-
 	}
 
 	public void execute() {

@@ -4,12 +4,15 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.uncommons.maths.statistics.DataSet;
 
 public class EstatisticaChamado {
 
 	private Double media;
+	private String mediaFormatted;
 	private Double desvioPadrao;
+	private String desvioPadraoFormatted;
 	private Double variancia;
 	private Double mediana;
 	private Double minimo;
@@ -19,15 +22,15 @@ public class EstatisticaChamado {
 		DataSet dataSet = new DataSet();
 
 		simulador.getChamados().forEach(c -> {
-			dataSet.addValue(function.apply(c));
+			dataSet.addValue(function.apply(c) * 1000);
 		});
 		
-		setDesvioPadrao(dataSet.getStandardDeviation());
-		setMedia(dataSet.getArithmeticMean());
-		setVariancia(dataSet.getVariance());
-		setMediana(dataSet.getMedian());
-		setMinimo(dataSet.getMinimum());
-		setMaximo(dataSet.getMaximum());
+		setDesvioPadrao(Math.abs(dataSet.getStandardDeviation()));
+		setMedia(Math.abs(dataSet.getArithmeticMean()));
+		setVariancia(Math.abs(dataSet.getVariance()));
+		setMediana(Math.abs(dataSet.getMedian()));
+		setMinimo(Math.abs(dataSet.getMinimum()));
+		setMaximo(Math.abs(dataSet.getMaximum()));
 	}
 
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
@@ -48,6 +51,7 @@ public class EstatisticaChamado {
 		Object oldValue = this.media;
 		this.media = media;
 		changeSupport.firePropertyChange("media", oldValue, media);
+		setMediaFormatted(DurationFormatUtils.formatDuration(media.longValue(), "HH:mm"));
 	}
 
 	public Double getDesvioPadrao() {
@@ -58,6 +62,7 @@ public class EstatisticaChamado {
 		Object oldValue = this.desvioPadrao;
 		this.desvioPadrao = desvioPadrao;
 		changeSupport.firePropertyChange("desvioPadrao", oldValue, desvioPadrao);
+		setDesvioPadraoFormatted(DurationFormatUtils.formatDuration(desvioPadrao.longValue(), "HH:mm"));
 	}
 
 	public Double getVariancia() {
@@ -98,6 +103,26 @@ public class EstatisticaChamado {
 		Object oldValue = this.maximo;
 		this.maximo = maximo;
 		changeSupport.firePropertyChange("maximo", oldValue, maximo);
+	}
+
+	public String getDesvioPadraoFormatted() {
+		return desvioPadraoFormatted;
+	}
+
+	public void setDesvioPadraoFormatted(String desvioPadraoFormatted) {
+		Object oldValue = this.desvioPadraoFormatted;
+		this.desvioPadraoFormatted = desvioPadraoFormatted;
+		changeSupport.firePropertyChange("desvioPadraoFormatted", oldValue, desvioPadraoFormatted);
+	}
+
+	public String getMediaFormatted() {
+		return mediaFormatted;
+	}
+
+	public void setMediaFormatted(String mediaFormatted) {
+		Object oldValue = this.mediaFormatted;
+		this.mediaFormatted = mediaFormatted;
+		changeSupport.firePropertyChange("mediaFormatted", oldValue, mediaFormatted);
 	}
 
 }

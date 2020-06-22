@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import com.jgoodies.binding.list.SelectionInList;
 
 import br.feevale.simulador.domain.fila.AnaliseChamados;
@@ -41,11 +43,13 @@ public class AnaliseChamadoTableModel extends AbstractTableModel {
 		} else if (columnIndex == 1) {
 			return analise.getNrDesenvolvedores();
 		} else if (columnIndex > 1  && columnIndex < getColumnCount() -2) {
-			return analise.getResultadoMetrica().get(columnIndex - 2);
+			Double result = analise.getResultadoMetrica().get(columnIndex - 2);
+			if (result == null) return null;
+			return DurationFormatUtils.formatDuration(result.longValue(), "HH:mm");
 		} else if (columnIndex == getColumnCount() - 2) {
-			return analise.getMedia();
+			return DurationFormatUtils.formatDuration(analise.getMedia().longValue(), "HH:mm");
 		} else if (columnIndex == getColumnCount() - 1) {
-			return analise.getDesvioPadrao();
+			return DurationFormatUtils.formatDuration(analise.getDesvioPadrao().longValue(), "HH:mm");
 		}
 		return null;
 	}

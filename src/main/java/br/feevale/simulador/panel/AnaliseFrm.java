@@ -72,10 +72,10 @@ public class AnaliseFrm extends JFrame {
 	}
 
 	private void initComponents() {
-		tfMedia = BasicComponentFactory.createFormattedTextField(modelEstatistica.getModel("media"), new DecimalFormat("#,###.00"));
+		tfMedia = BasicComponentFactory.createTextField(modelEstatistica.getModel("mediaFormatted"));
 		tfMedia.setEditable(false);
 		
-		tfDesvioPadrao = BasicComponentFactory.createFormattedTextField(modelEstatistica.getModel("desvioPadrao"), new DecimalFormat("#,###.00"));
+		tfDesvioPadrao = BasicComponentFactory.createTextField(modelEstatistica.getModel("desvioPadraoFormatted"));
 		tfDesvioPadrao.setEditable(false);
 		
 		cobTipoValor = new JComboBox<>(new ComboBoxAdapter(TipoValorAleatorio.values(), modelFilter.getModel("tipoValor")));

@@ -20,7 +20,7 @@ public class NumberGeneratorFactory {
 		} else if (tipo == TipoValorAleatorio.NORMAL) {
 			return new GaussianGenerator(estatisticas.getMedia(), estatisticas.getDesvioPadrao(), random);
 		} else if (tipo == TipoValorAleatorio.POISSON) {
-			return new PoissonGenerator(estatisticas.getMedia(), random);
+			return new PoissonGenerator(estatisticas.getVariancia(), random);
 		}
 		throw new RuntimeException("Deu galho");
 	}

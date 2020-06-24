@@ -11,7 +11,7 @@ public class Simulador {
 
 	private List<Chamado> chamados = new ArrayList<>();
 	private Integer escalaUmaHora = 300;
-	private Integer nrDesenvolvedores = 10;
+	private Integer nrDesenvolvedores = 1;
 	
 	private List<Desenvolvedor> desenvolvedores = new ArrayList<>();
 
@@ -154,6 +154,7 @@ public class Simulador {
 				
 				emDesenvolvimento.remove(chamado);
 				finalizados.add(chamado);
+				
 			}
 		}
 	

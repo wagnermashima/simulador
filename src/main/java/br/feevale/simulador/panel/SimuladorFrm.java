@@ -161,4 +161,8 @@ public class SimuladorFrm extends JFrame {
 		return builder.getPanel();
 	}
 
+	public void setSimulador(Simulador simulador) {
+		model.setBean(simulador);
+	}
+
 }

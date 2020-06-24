@@ -17,26 +17,15 @@ public class GeradorChamado {
 
 	public GeradorChamado(Simulador simulador, TipoValorAleatorio tipoValor) {
 		this.simulador = simulador;
-		this.estatisticasEntreChamados = new EstatisticaChamado(simulador, Chamado::getTempoEntreChamadosSeconds);
-		this.estatisticasTempoEmDev = new EstatisticaChamado(simulador, Chamado::getTempoEmDesenvolvimentoSeconds);
-		this.tempoEntreChamadosGenerator = NumberGeneratorFactory.build(estatisticasEntreChamados, tipoValor);
-		this.tempoDesenvolvimentoGenerator = NumberGeneratorFactory.build(estatisticasTempoEmDev, tipoValor);
 	}
 	
 	public List<Chamado> gerar() {
 		List<Chamado> novosChamados = new ArrayList<Chamado>();
-		LocalDateTime dataBase = simulador.getChamados().stream().findFirst().get().getDtEntradaDesenvolvimento();
 		for (Chamado chamado : simulador.getChamados()) {
 			try {
 				Chamado novoChamado = new Chamado();
 				BeanUtils.copyProperties(novoChamado, chamado);
-				
-				dataBase = dataBase.plusSeconds(getTempoEntreChamadosRandom());
-				novoChamado.setDtEntradaDesenvolvimento(dataBase);
-				novoChamado.setTempoEmDesenvolvimentoRandom(getTempoEmDesenvolvimentoRandom());
-				
 				novosChamados.add(novoChamado);
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -150,6 +150,7 @@ public class AnaliseFrm extends JFrame {
 			
 			GeradorChamado geradorChamado = new GeradorChamado(model.getBean(), filter.getTipoValor());
 			Simulador simulador = new Simulador();
+			simulador.setNrDesenvolvedores(model.getBean().getNrDesenvolvedores());
 			simulador.setChamados(geradorChamado.gerar());
 			
 			RepresentacaoFila representacaoFila = new RepresentacaoFila(simulador);
@@ -158,6 +159,11 @@ public class AnaliseFrm extends JFrame {
 			EstatisticaChamado estatisticas = new EstatisticaChamado(simulador, Chamado::getTempoEmEsperaSeconds);
 			
 			analise.getResultadoMetrica().put(i, estatisticas.getMedia());
+			
+			simulador.getChamados().sort((o1,o2) -> o1.getDtEntradaDesenvolvimento().compareTo(o2.getDtEntradaDesenvolvimento())); 
+			
+			SimuladorFrm novoFrm = new SimuladorFrm();
+			novoFrm.setSimulador(simulador);
 		}
 		selectionAnalise.getList().add(analise);
 		tableModel.fireTableStructureChanged();

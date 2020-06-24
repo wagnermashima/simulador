@@ -25,7 +25,7 @@ import br.feevale.simulador.domain.AnaliseFilter;
 import br.feevale.simulador.domain.Chamado;
 import br.feevale.simulador.domain.EstatisticaChamado;
 import br.feevale.simulador.domain.GeradorChamado;
-import br.feevale.simulador.domain.RepresentacaoFila;
+import br.feevale.simulador.domain.SimuladorFila;
 import br.feevale.simulador.domain.Simulador;
 import br.feevale.simulador.domain.TipoValorAleatorio;
 import br.feevale.simulador.domain.fila.AnaliseChamados;
@@ -153,7 +153,7 @@ public class AnaliseFrm extends JFrame {
 			simulador.setNrDesenvolvedores(model.getBean().getNrDesenvolvedores());
 			simulador.setChamados(geradorChamado.gerar());
 			
-			RepresentacaoFila representacaoFila = new RepresentacaoFila(simulador);
+			SimuladorFila representacaoFila = new SimuladorFila(simulador);
 			representacaoFila.simular();
 			
 			EstatisticaChamado estatisticas = new EstatisticaChamado(simulador, Chamado::getTempoEmEsperaSeconds);

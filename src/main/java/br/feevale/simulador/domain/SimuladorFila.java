@@ -3,13 +3,13 @@ package br.feevale.simulador.domain;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class RepresentacaoFila {
+public class SimuladorFila {
 	
 	private Simulador simulador;
 	
 	private boolean continnue = true;
 	
-	public RepresentacaoFila(Simulador simulador) {
+	public SimuladorFila(Simulador simulador) {
 		this.simulador = simulador;
 	}
 	

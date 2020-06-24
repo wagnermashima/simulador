@@ -22,7 +22,7 @@ import br.feevale.simulador.domain.Chamado;
 import br.feevale.simulador.domain.Desenvolvedor;
 import br.feevale.simulador.domain.Simulador;
 import br.feevale.simulador.domain.SimuladorThread;
-import br.feevale.simulador.domain.RepresentacaoFila;
+import br.feevale.simulador.domain.SimuladorFila;
 
 @SuppressWarnings("serial")
 public class FilaFrm extends JFrame {

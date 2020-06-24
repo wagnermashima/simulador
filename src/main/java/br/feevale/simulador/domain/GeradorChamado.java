@@ -12,11 +12,15 @@ public class GeradorChamado {
 	private Simulador simulador;
 	private NumberGenerator<? extends Number> tempoEntreChamadosGenerator;
 	private NumberGenerator<? extends Number> tempoDesenvolvimentoGenerator;
+	private EstatisticaChamado estatisticasEntreChamados;
+	private EstatisticaChamado estatisticasTempoEmDev;
 
 	public GeradorChamado(Simulador simulador, TipoValorAleatorio tipoValor) {
 		this.simulador = simulador;
-		this.tempoEntreChamadosGenerator = NumberGeneratorFactory.build(new EstatisticaChamado(simulador, Chamado::getTempoEntreChamadosSeconds), tipoValor);
-		this.tempoDesenvolvimentoGenerator = NumberGeneratorFactory.build(new EstatisticaChamado(simulador, Chamado::getTempoEmDesenvolvimentoSeconds), tipoValor);
+		this.estatisticasEntreChamados = new EstatisticaChamado(simulador, Chamado::getTempoEntreChamadosSeconds);
+		this.estatisticasTempoEmDev = new EstatisticaChamado(simulador, Chamado::getTempoEmDesenvolvimentoSeconds);
+		this.tempoEntreChamadosGenerator = NumberGeneratorFactory.build(estatisticasEntreChamados, tipoValor);
+		this.tempoDesenvolvimentoGenerator = NumberGeneratorFactory.build(estatisticasTempoEmDev, tipoValor);
 	}
 	
 	public List<Chamado> gerar() {
@@ -41,11 +45,32 @@ public class GeradorChamado {
 	}
 
 	private Long getTempoEntreChamadosRandom() {
-		return tempoEntreChamadosGenerator.nextValue().longValue();
+		Long x = -1l;
+
+		long maximo = estatisticasEntreChamados.getMaximo().longValue();
+		long minimo = estatisticasEntreChamados.getMinimo().longValue();
+		boolean cagado = maximo < minimo;
+		
+		while (x > maximo || x < minimo) {
+			x = tempoEntreChamadosGenerator.nextValue().longValue();
+		}
+		
+		return x;
 	}
 	
 	private Long getTempoEmDesenvolvimentoRandom() {
-		return tempoDesenvolvimentoGenerator.nextValue().longValue();
+		
+		Long x = -1l;
+
+		long maximo = estatisticasTempoEmDev.getMaximo().longValue();
+		long minimo = estatisticasTempoEmDev.getMinimo().longValue();
+		boolean cagado = maximo < minimo;
+		
+		while (x > maximo || x < minimo) {
+			x = tempoDesenvolvimentoGenerator.nextValue().longValue();
+		}
+		
+		return x;
 	}
 	
 }

@@ -145,6 +145,7 @@ public class AnaliseFrm extends JFrame {
 		AnaliseChamados analise = new AnaliseChamados();
 		analise.setTipo(filter.getTipoValor());
 		analise.setNrDesenvolvedores(model.getBean().getNrDesenvolvedores());
+		
 		for (int i = 0; i < filter.getNrVezesSimular(); i++) {
 			
 			GeradorChamado geradorChamado = new GeradorChamado(model.getBean(), filter.getTipoValor());

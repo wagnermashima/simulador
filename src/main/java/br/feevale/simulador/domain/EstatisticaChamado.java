@@ -22,7 +22,13 @@ public class EstatisticaChamado {
 		DataSet dataSet = new DataSet();
 
 		simulador.getChamados().forEach(c -> {
-			dataSet.addValue(function.apply(c) * 1000);
+			double value = function.apply(c) * 1000;
+			
+			if(value >= 0) {
+				dataSet.addValue(value);
+			} else {
+				System.out.println("ja to avisando que tem galho...");
+			}
 		});
 		
 		setDesvioPadrao(Math.abs(dataSet.getStandardDeviation()));
@@ -31,6 +37,10 @@ public class EstatisticaChamado {
 		setMediana(Math.abs(dataSet.getMedian()));
 		setMinimo(Math.abs(dataSet.getMinimum()));
 		setMaximo(Math.abs(dataSet.getMaximum()));
+		
+		boolean cagada = minimo > maximo;
+		
+		System.out.println("cagou " + cagada);
 	}
 
 	private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
